@@ -1,2 +1,2 @@
-# monad-playground
-Monad and FP playground
+# monad-scratchpad
+Monad and FP scratchpad
