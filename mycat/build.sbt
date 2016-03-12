@@ -7,16 +7,18 @@ version       := "0.1.0"
 scalaVersion  := "2.11.8"
 
 scalacOptions ++= Seq(
+  "-deprecation",
   "-feature",
   "-unchecked",
   "-Xfatal-warnings",
   "-Xlint",
   "-encoding",
-  "utf8"
+  "utf8",
+  "-language:_"
 )
 
 libraryDependencies ++= {
-  val scalazV = "7.1.0"
+  val scalazV = "7.2.1"
   Seq(
     "org.scalaz"  %%  "scalaz-core"                 % scalazV,
     //"org.scalaz"  %%  "scalaz-effect"               % scalazV,
