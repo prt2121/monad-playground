@@ -42,6 +42,11 @@ class Parallel {
         def call = a(es).get
       })
 
+    // EXERCISE 7.4
+    // convert any function A => B to one that evaluates its result asynchronously
+    def asyncF[A, B](f: A => B): A => Par[B] =
+      f _ andThen lazyUnit _
+
     private case class UnitFuture[A](get: A) extends Future[A] {
       def isDone = true
 
