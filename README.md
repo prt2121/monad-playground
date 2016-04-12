@@ -1,2 +1,2 @@
-# monad-scratchpad
-Monad and FP scratchpad
+# typeclass scratchpad
+Typeclass, Monad and FP scratchpad
