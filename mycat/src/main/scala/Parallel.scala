@@ -47,6 +47,11 @@ class Parallel {
     def asyncF[A, B](f: A => B): A => Par[B] =
       f _ andThen lazyUnit _
 
+    // implicit conversions for infix syntax
+    implicit def toParOps[A](p: Par[A]): ParOps[A] = new ParOps(p)
+
+    class ParOps[A](p: Par[A])
+
     private case class UnitFuture[A](get: A) extends Future[A] {
       def isDone = true
 
