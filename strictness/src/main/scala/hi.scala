@@ -1,9 +1,32 @@
-import collection.mutable.ListBuffer
-
 sealed trait Stream[+A] {
+
+  import Stream.cons
+  import collection.mutable.ListBuffer
+
   def headOption: Option[A] = this match {
     case Empty => None
     case Cons(h, _) => Some(h())
+  }
+
+  // EXERCISE 5.2
+  // Write the function take(n)
+  def take(n: Int): Stream[A] = this match {
+    case Cons(h, t) if n > 1 => cons(h(), t().take(n - 1))
+    case Cons(h, _) if n == 1 => cons(h(), Empty)
+    case _ => Empty
+  }
+
+  @annotation.tailrec
+  final def drop(n: Int): Stream[A] = this match {
+    case Cons(_, t) if n > 0 => t().drop(n - 1)
+    case _ => this
+  }
+
+  // Write the function takeWhile for returning all starting elements of a Stream
+  // that match the given predicate.
+  def takeWhile(p: A => Boolean): Stream[A] = this match {
+    case Cons(h, t) if p(h()) => cons(h(), t().takeWhile(p))
+    case _ => Empty
   }
 
   // Write a function to convert a Stream to a List
@@ -31,7 +54,7 @@ case object Empty extends Stream[Nothing]
 case class Cons[+A](h: () => A, t: () => Stream[A]) extends Stream[A]
 
 object Stream {
-  def cons[A](hd: => A, tl: => Stream[A]): Stream[A] = {
+  def cons[B](hd: => B, tl: => Stream[B]): Stream[B] = {
     lazy val head = hd
     lazy val tail = tl
     Cons(() => head, () => tail)
