@@ -1,7 +1,26 @@
+package stream
+
 sealed trait Stream[+A] {
 
   import Stream.cons
   import collection.mutable.ListBuffer
+
+  // EXERCISE 5.4
+  // terminate the traversal as soon as
+  // it encounters a non-matching value.
+//  scala> import stream._
+//  import stream._
+//
+//  scala> Stream(1,0,1,0).forAll(_ < 2)
+//  res1: Boolean = true
+//
+//  scala> Stream(1,2,3).forAll(_ < 2)
+//  res2: Boolean = false
+  def forAll(p: A => Boolean): Boolean = this match {
+    case Empty => true
+    case Cons(h, t) if p(h()) => t().forAll(p)
+    case _ => false
+  }
 
   def headOption: Option[A] = this match {
     case Empty => None
@@ -59,6 +78,9 @@ object Stream {
     lazy val tail = tl
     Cons(() => head, () => tail)
   }
+
+  def apply[A](as: A*): Stream[A] =
+    if (as.isEmpty) Empty else cons(as.head, apply(as.tail: _*))
 }
 
 object Hi {
